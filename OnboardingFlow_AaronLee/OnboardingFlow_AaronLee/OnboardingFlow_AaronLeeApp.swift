@@ -11,7 +11,7 @@ import SwiftUI
 struct OnboardingFlow_AaronLeeApp: App {
     var body: some Scene {
         WindowGroup {
-            View1()
+            TitlePage()
         }
     }
 }

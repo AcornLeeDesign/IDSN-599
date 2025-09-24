@@ -142,28 +142,10 @@ class UserData: ObservableObject {
     @Published var email: String = ""
 }
 
-struct View1: View {
-    @StateObject private var userData = UserData()
-    
+struct TitlePage: View {
     @State private var c1: Color = .black
     @State private var c2: Color = .white
     @State private var c_size: CGFloat = 0
-    
-    @State private var showField = false
-    @State private var showButton = false
-    @State private var navigate = false
-    
-    func checkFields() {
-        if !userData.firstName.isEmpty && !userData.lastName.isEmpty {
-            withAnimation {
-                showButton = true
-            }
-        } else {
-            withAnimation {
-                showButton = false
-            }
-        }
-    }
     
     var body: some View {
         NavigationStack {
@@ -185,85 +167,133 @@ struct View1: View {
                 }
                 .ignoresSafeArea()
                 
-                Typewriter(text: [
-                    "who are you?",
-                    "to yourself?",
-                    "to those around you?",
-                    "It's nice to meet you"
-                ])
-                .offset(y: -100)
+                VStack {
+                    Typewriter(text: [
+                        "Oh hi!",
+                        "A curious soul",
+                        "I've been waiting",
+                        "this is\n{ .HORSE. }",
+                    ])
+                }
+                .offset(y: -40)
                 
                 VStack {
                     Spacer()
                     
-                    VStack(spacing: 16) {
-                        if showField {
-                            TextField(
-                                "",
-                                text: $userData.firstName,
-                                prompt: Text("First Name")
-                                    .foregroundColor(.white.opacity(0.6))
-                            )
-                            .accentColor(.white)
-                            .padding(16)
-                            .frame(maxWidth: .infinity)
-                            .foregroundColor(.white)
-                            .background(Color.gray.opacity(0.5))
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.gray, lineWidth: 1.5)
-                            )
-                            .padding(.horizontal, 24)
-                            
-                            TextField(
-                                "",
-                                text: $userData.lastName,
-                                prompt: Text("Last Name")
-                                    .foregroundColor(.white.opacity(0.6))
-                            )
-                            .accentColor(.white)
-                            .padding(16)
-                            .frame(maxWidth: .infinity)
-                            .foregroundColor(.white)
-                            .background(Color.gray.opacity(0.5))
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.gray, lineWidth: 1.5)
-                            )
-                            .padding(.horizontal, 24)
-                        }
-                    }
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            withAnimation(.easeInOut(duration: 1)) {
-                                showField = true
-                            }
-                        }
-                    }
-                    Spacer()
-                }
-                
-                VStack {
-                    Spacer()
-                    if !userData.firstName.isEmpty && !userData.lastName.isEmpty {
-                        ContinueButton(label: "Continue", destination: View2(userData: userData))
-                            .opacity(showButton ? 1 : 0)
-                            .offset(y: showButton ? 0 : 20)
-                            .animation(.spring(duration: 1), value: showButton)
-                    }
-                }
-                .onChange(of: userData.firstName) {
-                    checkFields()
-                }
-                .onChange(of: userData.lastName) {
-                    checkFields()
+                    ContinueButton(label: "Continue", destination: View1())
                 }
             }
         }
     }
 }
+
+struct View1: View {
+    @StateObject private var userData = UserData()
+    
+    @State private var showField = false
+    @State private var showButton = false
+    @State private var navigate = false
+    
+    func checkFields() {
+        if !userData.firstName.isEmpty && !userData.lastName.isEmpty {
+            withAnimation {
+                showButton = true
+            }
+        } else {
+            withAnimation {
+                showButton = false
+            }
+        }
+    }
+    
+    var body: some View {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            Typewriter(text: [
+                "who are you?",
+                "to yourself?",
+                "to those around you?",
+                "It's nice to meet you"
+            ])
+            .offset(y: -100)
+            
+            VStack {
+                Spacer()
+                
+                VStack(spacing: 16) {
+                    if showField {
+                        TextField(
+                            "",
+                            text: $userData.firstName,
+                            prompt: Text("First Name")
+                                .foregroundColor(.white.opacity(0.6))
+                        )
+                        .accentColor(.white)
+                        .padding(16)
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.white)
+                        .background(Color.gray.opacity(0.5))
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray, lineWidth: 1.5)
+                        )
+                        .padding(.horizontal, 24)
+                        
+                        TextField(
+                            "",
+                            text: $userData.lastName,
+                            prompt: Text("Last Name")
+                                .foregroundColor(.white.opacity(0.6))
+                        )
+                        .accentColor(.white)
+                        .padding(16)
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.white)
+                        .background(Color.gray.opacity(0.5))
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray, lineWidth: 1.5)
+                        )
+                        .padding(.horizontal, 24)
+                    }
+                }
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        withAnimation(.easeInOut(duration: 1)) {
+                            showField = true
+                        }
+                    }
+                }
+                Spacer()
+            }
+            
+            VStack {
+                Spacer()
+                if !userData.firstName.isEmpty && !userData.lastName.isEmpty {
+                    ContinueButton(label: "Continue", destination: View2(userData: userData))
+                        .opacity(showButton ? 1 : 0)
+                        .offset(y: showButton ? 0 : 20)
+                        .animation(.spring(duration: 1), value: showButton)
+                }
+            }
+            .onChange(of: userData.firstName) {
+                checkFields()
+            }
+            .onChange(of: userData.lastName) {
+                checkFields()
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                CustomBackButton()
+            }
+        }
+    }
+}
+
 
 struct View2: View {
     @ObservedObject var userData: UserData
@@ -385,7 +415,7 @@ struct View3: View {
                 .animation(.easeOut(duration: 0.5), value: showButton)
                 .disabled(!skipWait)
                 
-                ContinueButton(label: "Continue", destination: View4(userData: userData))
+                ContinueButton(label: "Continue", destination: View4())
                     .opacity(showButton ? 1 : 0)
                     .offset(y: showButton ? 0 : 20)
                     .animation(.spring(duration: 1), value: showButton)
@@ -409,13 +439,12 @@ struct View3: View {
 }
 
 struct View4: View {
-    @ObservedObject var userData: UserData
-
     var body: some View {
         ZStack {
-            Text("What's up")
-                .bold()
-                .font(.title)
+            Image("horse-drawing")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 240, height: 240)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -427,5 +456,5 @@ struct View4: View {
 }
 
 #Preview {
-    View1()
+    TitlePage()
 }
