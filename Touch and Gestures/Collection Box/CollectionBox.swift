@@ -11,7 +11,7 @@ import SwiftUI
 struct Touch_and_GesturesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }

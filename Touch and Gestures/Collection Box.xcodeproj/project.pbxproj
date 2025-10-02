@@ -11,9 +11,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A4DDE1502E7F63390027B54D /* Touch and Gestures */ = {
+		A4DDE1502E7F63390027B54D /* Collection Box */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Touch and Gestures";
+			path = "Collection Box";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		A4DDE1452E7F63390027B54D = {
 			isa = PBXGroup;
 			children = (
-				A4DDE1502E7F63390027B54D /* Touch and Gestures */,
+				A4DDE1502E7F63390027B54D /* Collection Box */,
 				A4DDE14F2E7F63390027B54D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +61,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A4DDE1502E7F63390027B54D /* Touch and Gestures */,
+				A4DDE1502E7F63390027B54D /* Collection Box */,
 			);
 			name = "Touch and Gestures";
 			packageProductDependencies = (
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A4DDE1492E7F63390027B54D /* Build configuration list for PBXProject "Touch and Gestures" */;
+			buildConfigurationList = A4DDE1492E7F63390027B54D /* Build configuration list for PBXProject "Collection Box" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -305,7 +305,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A4DDE1492E7F63390027B54D /* Build configuration list for PBXProject "Touch and Gestures" */ = {
+		A4DDE1492E7F63390027B54D /* Build configuration list for PBXProject "Collection Box" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A4DDE1572E7F633B0027B54D /* Debug */,
