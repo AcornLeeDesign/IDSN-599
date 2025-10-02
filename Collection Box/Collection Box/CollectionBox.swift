@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct Touch_and_GesturesApp: App {
+struct CollectionBox: App {
     var body: some Scene {
         WindowGroup {
             RootView()
