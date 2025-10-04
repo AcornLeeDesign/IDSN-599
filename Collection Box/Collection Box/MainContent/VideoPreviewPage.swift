@@ -1,49 +1,61 @@
 import SwiftUI
 
 struct VideoPreviewPage: View {
-    let name: String
-    @Binding var active: String?
+    let item: MediaItem
+    @Binding var active: MediaItem?
     
     var body: some View {
-        VStack(spacing: 24) {
-            HStack {
-                Spacer()
-                
-                Button(action: {
-                    withAnimation(.spring()) {
-                        active = nil
+        ZStack {
+            Color.gray.edgesIgnoringSafeArea(.all)
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Close button
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            withAnimation(.spring()) {
+                                active = nil
+                            }
+                        }) {
+                            Image(systemName: "xmark")
+                                .font(.title)
+                                .foregroundColor(.gray)
+                        }
                     }
-                }) {
-                    Image(systemName: "xmark")
-                        .font(.title)
-                        .foregroundColor(.gray)
+                    
+                    // Video preview
+                    if let url = item.videoURL {
+                        AspectVideoView(url: url, showControls: true)
+                            .frame(maxWidth: .infinity)
+                    } else {
+                        Color.gray.opacity(0.2)
+                            .frame(height: 200)
+                            .cornerRadius(12)
+                    }
+                    
+                    // Info panel
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text(item.title)
+                            .font(.title)
+                        
+                        Text("Story")
+                            .font(.title2)
+                        
+                        Text(item.description ?? "No description available")
+                            .font(.body)
+                        
+                        Text("Uploaded: \(item.uploadDate ?? "Unknown")")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 16)
+                    
+                    Spacer()
                 }
             }
-            
-            AspectVideoView(name: name, showControls: true)
-                .frame(maxWidth: .infinity)
-            
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Placeholding title")
-                    .font(.title)
-                
-                Text("Story")
-                    .font(.title2)
-                
-                Text("Lorem Ipsum")
-                    .font(.body)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 8)
-            
-            Spacer()
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+            .zIndex(1)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.white)
-        .ignoresSafeArea()
-        .padding(.top, 16)
-        .padding(.horizontal, 24)
-        .transition(.move(edge: .bottom).combined(with: .opacity))
-        .zIndex(1)
-    }
+        }
 }

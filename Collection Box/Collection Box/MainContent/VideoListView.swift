@@ -1,31 +1,38 @@
-//
-//  VideoListView.swift
-//  Touch and Gestures
-//
-//  Created by Aaron Lee on 10/2/25.
-//
 import SwiftUI
 
-struct VideoListView: View {
-    let videos: [String]
-    @Binding var active: String?
-    
+struct DefaultElementsView: View {
+    let videos: [MediaItem]
+    @Binding var active: MediaItem?
+
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                ForEach(videos, id: \.self) { name in
-                    Button(action: {
-                        withAnimation(.spring()) {
-                            active = name
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(videos) { item in
+                        Button {
+                            withAnimation(.spring()) { active = item }
+                        } label: {
+                            if let url = item.videoURL {
+                                AspectVideoView(url: url, showControls: false)
+                                    .frame(height: 300)
+                                    .padding(.horizontal)
+                            } else {
+                                ZStack {
+                                    Rectangle()
+                                        .fill(Color.gray.opacity(0.2))
+                                        .frame(height: 300)
+                                        .cornerRadius(12)
+                                    Text("No video")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.horizontal)
+                            }
                         }
-                    }) {
-                        AspectVideoView(name: name, showControls: false)
-                            .frame(height: 300)
-                            .padding(.horizontal)
                     }
                 }
+                .padding(.vertical)
             }
-            .padding(.vertical)
         }
     }
 }

@@ -1,28 +1,33 @@
-//
-//  ContentView.swift
-//  Touch and Gestures
-//
-//  Created by Aaron Lee on 10/2/25.
-//
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var userData: UserData
-
-    @State private var videos: [String] = ["BloomBounce"]
-    @State private var active: String? = nil
+    @StateObject private var vm = MediaVM()
+    @State private var active: MediaItem? = nil
     
     var body: some View {
         ZStack {
-            Color.white.ignoresSafeArea()
-            
-            if let name = active {
-                VideoPreviewPage(name: name, active: $active)
+            // Base layer: the list of videos
+            if vm.items.isEmpty {
+                Text("No data yet")
+                    .foregroundColor(.gray)
             } else {
-                VideoListView(videos: videos, active: $active)
+                VideoListView(videos: vm.items, active: $active)
+            }
+            
+            // Overlay: the preview
+            if let selected = active {
+                VideoPreviewPage(item: selected, active: $active)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .zIndex(1)
             }
         }
         .animation(.spring(), value: active)
+        .task {
+            await vm.load()
+        }
     }
 }
 
+#Preview {
+    ContentView()
+}

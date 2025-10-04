@@ -12,12 +12,16 @@ struct RootView: View {
     @StateObject private var userData = UserData()
     
     var body: some View {
-        if bob == true {
-            TitlePage(userData: userData, bob: $bob)
+        ZStack {
+            if bob {
+                TitlePage(userData: userData, bob: $bob)
+                    .transition(.move(edge: .leading))
+            } else {
+                ContentView()
+                    .transition(.opacity)
+            }
         }
-        else {
-            ContentView(userData: userData)
-        }
+        .animation(.easeInOut(duration: 0.5), value: bob)
     }
 }
 
