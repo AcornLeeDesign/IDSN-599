@@ -7,16 +7,17 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            // Base layer: the list of videos
+            Color.black.edgesIgnoringSafeArea(.all)
+
             if vm.items.isEmpty {
-                Color.black.edgesIgnoringSafeArea(.all)
                 Text("fishing for stuff")
                     .foregroundColor(.white)
-            } else {
+            } else if elementsView {
                 ElementsView(videos: vm.items, active: $active, elementsView: $elementsView)
+                    .transition(.scale(scale: 0.95).combined(with: .opacity))
             }
             
-            // Overlay: the preview
+            // preview
             if let selected = active {
                 VideoPreviewPage(item: selected, active: $active, elementsView: $elementsView)
                     .transition(.move(edge: .bottom).combined(with: .opacity))

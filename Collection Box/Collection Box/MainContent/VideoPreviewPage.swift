@@ -9,39 +9,11 @@ struct VideoPreviewPage: View {
 
     var body: some View {
         ZStack {
-            Color.black
-                .ignoresSafeArea()
-                .onTapGesture {
-                    withAnimation(.spring()) {
-                        audioPlayer?.pause()
-                        audioPlayer = nil
-                        active = nil
-                        elementsView = true
-                    }
-                }
             VStack {
                 Spacer()
                 
                 VStack(spacing: 24) {
-                    // Close handle
-                    Capsule()
-                        .fill(Color.white.opacity(0.5))
-                        .frame(width: 60, height: 4)
-                        .padding(.top, 2)
-
-                    // Video preview
-                    if let videoURL = item.videoURL {
-                        AspectVideoView(url: videoURL, showControls: true)
-                            .frame(maxWidth: .infinity)
-                            .cornerRadius(12)
-                            .shadow(radius: 4)
-                    } else {
-                        Color.gray.opacity(0.2)
-                            .frame(height: 200)
-                            .cornerRadius(12)
-                    }
-
-                    VStack(alignment: .leading, spacing: 16) {
+                    HStack {
                         if let musicURL = item.musicURL {
                             Text(item.title)
                                 .foregroundColor(.white)
@@ -56,7 +28,42 @@ struct VideoPreviewPage: View {
                                     audioPlayer = nil
                                 }
                         }
+                        
+                        Spacer()
+                        // x
+                        VStack {
+                            Image(systemName: "xmark")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                                .foregroundColor(.white)
+                                .onTapGesture {
+                                    withAnimation(.spring()) {
+                                        audioPlayer?.pause()
+                                        audioPlayer = nil
+                                        active = nil
+                                        elementsView = true
+                                    }
+                                }
+                                .padding(8)
+                        }
+                        .background(Color.white.opacity(0.4))
+                        .cornerRadius(12)
+                    }
 
+                    // Video preview
+                    if let videoURL = item.videoURL {
+                        AspectVideoView(url: videoURL, showControls: true)
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(12)
+                            .shadow(radius: 4)
+                    } else {
+                        Color.gray.opacity(0.2)
+                            .frame(height: 200)
+                            .cornerRadius(12)
+                    }
+
+                    VStack(alignment: .leading, spacing: 16) {
                         Text("About")
                             .font(.title2)
                             .foregroundColor(.white)
@@ -67,24 +74,23 @@ struct VideoPreviewPage: View {
 
                         Text("Uploaded: \(item.uploadDate ?? "Unknown")")
                             .font(.caption)
-                            .foregroundColor(.secondary)
                             .foregroundColor(.white)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                     Spacer()
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 8)
+                .padding(24)
                 .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.9)
                 .background(Color.gray.opacity(0.5))
-                .cornerRadius(20, corners: [.topLeft, .topRight])
+                .cornerRadius(24, corners: [.topLeft, .topRight])
                 .transition(.move(edge: .bottom).combined(with: .opacity))
                 .zIndex(1)
             }
         }
         .ignoresSafeArea(edges: .bottom)
         .transition(.move(edge: .bottom).combined(with: .opacity))
+        
     }
 }
 

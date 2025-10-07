@@ -45,7 +45,7 @@ struct Typewriter: View {
                 await MainActor.run {
                     displayedText.append(char)
                 }
-                try? await Task.sleep(nanoseconds: 100_000_000)
+                try? await Task.sleep(nanoseconds: 80_000_000)
             }
             
             try? await Task.sleep(nanoseconds: 1_000_000_000)
@@ -56,7 +56,7 @@ struct Typewriter: View {
                     await MainActor.run {
                         displayedText.removeLast()
                     }
-                    try? await Task.sleep(nanoseconds: 70_000_000)
+                    try? await Task.sleep(nanoseconds: 50_000_000)
                 }
             }
             

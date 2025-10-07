@@ -13,12 +13,13 @@ struct RootView: View {
     
     var body: some View {
         ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
             if bob {
                 TitlePage(userData: userData, bob: $bob)
                     .transition(.move(edge: .leading))
             } else {
                 ContentView()
-                    .transition(.opacity)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .animation(.easeInOut(duration: 0.5), value: bob)
