@@ -29,7 +29,7 @@ struct AspectVideoView: View {
     @State private var player: AVPlayer? = nil
     @State private var playbackObserver: Any?
     @State var showControls: Bool = false
-    
+
     var body: some View {
         Group {
             if let player = player {
@@ -38,7 +38,7 @@ struct AspectVideoView: View {
                     .cornerRadius(8)
                     .onAppear {
                         player.play()
-                        // add observer once, to loop the item
+                        // Add looping observer only once
                         if playbackObserver == nil {
                             playbackObserver = NotificationCenter.default.addObserver(
                                 forName: .AVPlayerItemDidPlayToEndTime,
@@ -65,29 +65,29 @@ struct AspectVideoView: View {
         }
         .task { await loadPlayer() }
     }
-    
+
     private func loadPlayer() async {
         guard let url = url else { return }
         let asset = AVURLAsset(url: url)
-        
+
         do {
-            // Load video tracks asynchronously
+            // Load video tracks asynchronously to calculate aspect ratio
             let tracks = try await asset.loadTracks(withMediaType: .video)
             if let track = tracks.first {
-                // Load properties asynchronously
                 let size = try await track.load(.naturalSize)
                 let transform = try await track.load(.preferredTransform)
                 let transformedSize = size.applying(transform)
-                
                 if transformedSize.height != 0 {
                     aspectRatio = abs(transformedSize.width / transformedSize.height)
                 }
             }
-            
+
             let item = AVPlayerItem(asset: asset)
             await MainActor.run {
-                player = AVPlayer(playerItem: item)
-                player?.actionAtItemEnd = .none
+                let newPlayer = AVPlayer(playerItem: item)
+                newPlayer.actionAtItemEnd = .none
+                newPlayer.isMuted = true
+                player = newPlayer
             }
         } catch {
             print("Error loading video info: \(error)")

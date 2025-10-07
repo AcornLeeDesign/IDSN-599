@@ -21,4 +21,10 @@ struct MediaItem: Codable, Identifiable, Equatable {
         if p.starts(with: "http") { return URL(string: p) }
         return SupabaseService.shared.publicURL(for: p)
     }
+    
+    var musicURL: URL? {
+        guard let p = musicPath else { return nil }
+        if p.starts(with: "http") { return URL(string: p) }
+        return SupabaseService.shared.publicURL(for: p)
+    }
 }

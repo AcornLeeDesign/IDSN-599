@@ -19,6 +19,7 @@ final class SupabaseService {
     }
     
     func publicURL(for path: String, bucket: String = "videos") -> URL? {
+        print("starting ")
         if path.starts(with: "http") { return URL(string: path) }
         let clean = path.hasPrefix("/") ? String(path.dropFirst()) : path
         let urlString = "https://collection-box.supabase.co/storage/v1/object/public/\(bucket)/\(clean)"
