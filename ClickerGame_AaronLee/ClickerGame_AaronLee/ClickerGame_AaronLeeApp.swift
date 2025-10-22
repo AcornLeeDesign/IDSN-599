@@ -11,7 +11,7 @@ import SwiftUI
 struct ClickerGame_AaronLeeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TitlePage()
         }
     }
 }
