@@ -19,9 +19,10 @@ struct ContentView: View {
             
             // preview
             if let selected = active {
-                VideoPreviewPage(item: selected, active: $active, elementsView: $elementsView)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .zIndex(1)
+            VideoPreviewPage(item: selected, active: $active, elementsView: $elementsView)
+                .id(selected.id)  // Add this line - forces SwiftUI to create a new view instance
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .zIndex(1)
             }
         }
         .animation(.spring(), value: active)

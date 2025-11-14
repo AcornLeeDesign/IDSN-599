@@ -21,7 +21,7 @@ struct ElementsView: View {
                             
                         } label: {
                             if let url = item.videoURL {
-                                AspectVideoView(url: url, showControls: false)
+                                AspectVideoView(url: url, shouldAutoPlay: false, showControls: false)
                                     .frame(height: 300)
                                     .padding(.horizontal)
                             } else {

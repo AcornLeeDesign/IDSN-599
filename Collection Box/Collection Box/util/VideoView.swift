@@ -25,6 +25,7 @@ struct VideoPlayerController: UIViewControllerRepresentable {
 
 struct AspectVideoView: View {
     let url: URL?
+    let shouldAutoPlay: Bool  // Add this parameter
     @State private var aspectRatio: CGFloat = 16.0 / 9.0
     @State private var player: AVPlayer? = nil
     @State private var playbackObserver: Any?
@@ -37,25 +38,15 @@ struct AspectVideoView: View {
                     .aspectRatio(aspectRatio, contentMode: .fit)
                     .cornerRadius(8)
                     .onAppear {
-                        player.play()
-                        // Add looping observer only once
-                        if playbackObserver == nil {
-                            playbackObserver = NotificationCenter.default.addObserver(
-                                forName: .AVPlayerItemDidPlayToEndTime,
-                                object: player.currentItem,
-                                queue: .main
-                            ) { _ in
-                                player.seek(to: .zero)
-                                player.play()
-                            }
+                        if shouldAutoPlay {  // Only play if flag is true
+                            player.play()
+                            // ... existing observer code ...
                         }
                     }
                     .onDisappear {
                         player.pause()
-                        if let obs = playbackObserver {
-                            NotificationCenter.default.removeObserver(obs)
-                            playbackObserver = nil
-                        }
+                        player.seek(to: .zero)  // Reset position
+                        // ... existing cleanup code ...
                     }
             } else {
                 Color.gray.opacity(0.2)
@@ -63,7 +54,11 @@ struct AspectVideoView: View {
                     .cornerRadius(16)
             }
         }
-        .task { await loadPlayer() }
+        .task { 
+            if shouldAutoPlay {  // Only load if we should play
+                await loadPlayer() 
+            }
+        }
     }
 
     private func loadPlayer() async {

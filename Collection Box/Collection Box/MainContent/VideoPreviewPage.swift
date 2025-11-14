@@ -35,7 +35,7 @@ struct VideoPreviewPage: View {
                             Image(systemName: "xmark")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 16, height: 16)
+                                .frame(width: 12, height: 12)
                                 .foregroundColor(.white)
                                 .onTapGesture {
                                     withAnimation(.spring()) {
@@ -45,7 +45,7 @@ struct VideoPreviewPage: View {
                                         elementsView = true
                                     }
                                 }
-                                .padding(8)
+                                .padding(12)
                         }
                         .background(Color.white.opacity(0.4))
                         .cornerRadius(12)
@@ -53,7 +53,7 @@ struct VideoPreviewPage: View {
 
                     // Video preview
                     if let videoURL = item.videoURL {
-                        AspectVideoView(url: videoURL, showControls: true)
+                        AspectVideoView(url: videoURL, shouldAutoPlay: true, showControls: true)
                             .frame(maxWidth: .infinity)
                             .cornerRadius(12)
                             .shadow(radius: 4)
@@ -73,7 +73,7 @@ struct VideoPreviewPage: View {
                             .foregroundColor(.white)
 
                         Text("Uploaded: \(item.uploadDate ?? "Unknown")")
-                            .font(.caption)
+                            .font(.body)
                             .foregroundColor(.white)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -90,7 +90,6 @@ struct VideoPreviewPage: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .transition(.move(edge: .bottom).combined(with: .opacity))
-        
     }
 }
 
