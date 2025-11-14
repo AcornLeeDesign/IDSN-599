@@ -22,6 +22,9 @@ struct ElementsView: View {
                         } label: {
                             if let url = item.videoURL {
                                 AspectVideoView(url: url, shouldAutoPlay: false, showControls: false)
+                                    // Make the thumbnail non-interactive so the button
+                                    // receives the tap instead of the player view.
+                                    .allowsHitTesting(false)
                                     .frame(height: 300)
                                     .padding(.horizontal)
                             } else {

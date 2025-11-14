@@ -85,6 +85,8 @@ struct VideoPreviewPage: View {
                             // Trigger haptic feedback
                             let generator = UIImpactFeedbackGenerator(style: .light)
                             generator.impactOccurred()
+                            // Play a small tap sound
+                            playTapSound()
                             
                             // Toggle like state
                             likeManager.toggleLike(for: item.id)

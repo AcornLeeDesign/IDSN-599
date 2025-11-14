@@ -38,7 +38,9 @@ struct AspectVideoView: View {
                     .aspectRatio(aspectRatio, contentMode: .fit)
                     .cornerRadius(8)
                     .onAppear {
-                        if shouldAutoPlay {  // Only play if flag is true
+                        // Always have the player ready (loaded in .task),
+                        // but only auto-play when requested.
+                        if shouldAutoPlay {
                             player.play()
                             // ... existing observer code ...
                         }
@@ -54,10 +56,10 @@ struct AspectVideoView: View {
                     .cornerRadius(16)
             }
         }
-        .task { 
-            if shouldAutoPlay {  // Only load if we should play
-                await loadPlayer() 
-            }
+        // Always load the player so we can show the first frame / thumbnail,
+        // even when auto-play is disabled (e.g., in ElementsView).
+        .task {
+            await loadPlayer()
         }
     }
 
