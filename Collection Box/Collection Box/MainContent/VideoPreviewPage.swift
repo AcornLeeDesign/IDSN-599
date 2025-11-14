@@ -5,6 +5,7 @@ struct VideoPreviewPage: View {
     let item: MediaItem
     @Binding var active: MediaItem?
     @Binding var elementsView: Bool
+    @ObservedObject private var likeManager = LikeManager.shared
     @State private var audioPlayer: AVPlayer?
 
     var body: some View {
@@ -63,20 +64,47 @@ struct VideoPreviewPage: View {
                             .cornerRadius(12)
                     }
 
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("About")
-                            .font(.title2)
-                            .foregroundColor(.white)
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("About")
+                                .font(.title2)
+                                .foregroundColor(.white)
 
-                        Text(item.description ?? "No description available")
-                            .font(.body)
-                            .foregroundColor(.white)
+                            Text(item.description ?? "No description available")
+                                .font(.body)
+                                .foregroundColor(.white)
 
-                        Text("Uploaded: \(item.uploadDate ?? "Unknown")")
-                            .font(.body)
-                            .foregroundColor(.white)
+                            Text("Uploaded: \(item.uploadDate ?? "Unknown")")
+                                .font(.body)
+                                .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        // Heart button
+                        Button {
+                            // Trigger haptic feedback
+                            let generator = UIImpactFeedbackGenerator(style: .light)
+                            generator.impactOccurred()
+                            
+                            // Toggle like state
+                            likeManager.toggleLike(for: item.id)
+                        } label: {
+                            if likeManager.isLiked(item.id) {
+                                // Liked: solid white fill, no border
+                                Image(systemName: "heart.fill")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.white)
+                            } else {
+                                // Not liked: gray border, no fill
+                                Image(systemName: "heart")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .padding(.leading, 16)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     Spacer()
                 }
