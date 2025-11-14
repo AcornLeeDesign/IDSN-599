@@ -19,10 +19,8 @@ func playMusic(from url: URL) -> AVPlayer {
     return player
 }
 
-// Simple tap sound for UI interactions (e.g., liking an item).
-// Uses a built-in system sound so no extra asset is required.
+// Simple tap sound for likes
 func playTapSound() {
-    // 1104 is a light key-press click; adjust if you prefer a different feel.
     AudioServicesPlaySystemSound(1104)
 }
 
